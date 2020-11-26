@@ -2,14 +2,26 @@ package com.example.tasks.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.example.tasks.service.constants.TaskConstants
 import com.example.tasks.service.listener.APIListener
+import com.example.tasks.service.listener.ValidationListener
 import com.example.tasks.service.repository.HeaderModel
 import com.example.tasks.service.repository.PersonRepository
+import com.example.tasks.service.repository.local.SecurityPreferences
 import retrofit2.Call
 
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
-    public val mPersonRepository = PersonRepository()
+    public val mPersonRepository = PersonRepository(application)
+    private val mSharedPreferences = SecurityPreferences(application)
+
+    private val mLogin = MutableLiveData<ValidationListener>()
+    var login: LiveData<ValidationListener> = mLogin
+
+    private val mLoggeduser = MutableLiveData<Boolean>()
+    var loggedUser: LiveData<Boolean> = mLoggeduser
 
     /**
      * Faz login usando API
@@ -17,11 +29,15 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     fun doLogin(email: String, password: String) {
         mPersonRepository.login(email, password, object: APIListener {
             override fun onSuccess(model: HeaderModel) {
-                val s = ""
+                mSharedPreferences.store(TaskConstants.SHARED.TOKEN_KEY, model.token)
+                mSharedPreferences.store(TaskConstants.SHARED.PERSON_KEY, model.personKey)
+                mSharedPreferences.store(TaskConstants.SHARED.PERSON_NAME, model.name)
+
+                mLogin.value = ValidationListener()
             }
 
             override fun onFailure(str: String) {
-                val s = ""
+                mLogin.value = ValidationListener(str)
             }
 
         })
@@ -31,6 +47,12 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
      * Verifica se usuário está logado
      */
     fun verifyLoggedUser() {
+
+        val token = mSharedPreferences.get(TaskConstants.SHARED.TOKEN_KEY)
+        val person = mSharedPreferences.get(TaskConstants.SHARED.PERSON_KEY)
+        val logged = (token != "" && person != "")
+
+        mLoggeduser.value = logged
     }
 
 }
