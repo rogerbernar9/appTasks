@@ -7,14 +7,16 @@ import androidx.lifecycle.MutableLiveData
 import com.example.tasks.service.constants.TaskConstants
 import com.example.tasks.service.listener.APIListener
 import com.example.tasks.service.listener.ValidationListener
-import com.example.tasks.service.repository.HeaderModel
+import com.example.tasks.service.model.HeaderModel
 import com.example.tasks.service.repository.PersonRepository
+import com.example.tasks.service.repository.PriorityRepository
 import com.example.tasks.service.repository.local.SecurityPreferences
-import retrofit2.Call
 
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     public val mPersonRepository = PersonRepository(application)
+    public val mPriorityRepository = PriorityRepository(application)
+
     private val mSharedPreferences = SecurityPreferences(application)
 
     private val mLogin = MutableLiveData<ValidationListener>()
@@ -51,7 +53,9 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         val token = mSharedPreferences.get(TaskConstants.SHARED.TOKEN_KEY)
         val person = mSharedPreferences.get(TaskConstants.SHARED.PERSON_KEY)
         val logged = (token != "" && person != "")
-
+        if (!logged) {
+            mPriorityRepository.all()
+        }
         mLoggeduser.value = logged
     }
 

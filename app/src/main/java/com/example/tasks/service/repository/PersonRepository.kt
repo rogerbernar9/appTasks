@@ -1,10 +1,10 @@
 package com.example.tasks.service.repository
 
 import android.content.Context
-import android.view.View
 import com.example.tasks.R
 import com.example.tasks.service.constants.TaskConstants
 import com.example.tasks.service.listener.APIListener
+import com.example.tasks.service.model.HeaderModel
 import com.example.tasks.service.repository.remote.PersonService
 import com.example.tasks.service.repository.remote.RetrofitClient
 import com.google.gson.Gson

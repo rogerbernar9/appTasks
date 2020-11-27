@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.tasks.service.constants.TaskConstants
 import com.example.tasks.service.listener.APIListener
 import com.example.tasks.service.listener.ValidationListener
-import com.example.tasks.service.repository.HeaderModel
+import com.example.tasks.service.model.HeaderModel
 import com.example.tasks.service.repository.PersonRepository
 import com.example.tasks.service.repository.local.SecurityPreferences
 
