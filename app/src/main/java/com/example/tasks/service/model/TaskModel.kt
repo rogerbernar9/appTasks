@@ -17,6 +17,6 @@ class TaskModel {
     var duoDate: String = ""
 
     @SerializedName("Complete")
-    var boolean: Boolean = false
+    var complete: Boolean = false
 
 }
