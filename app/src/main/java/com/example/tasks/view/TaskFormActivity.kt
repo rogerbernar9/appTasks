@@ -78,7 +78,9 @@ class TaskFormActivity : AppCompatActivity(), View.OnClickListener, DatePickerDi
 
         mViewModel.validation.observe(this, androidx.lifecycle.Observer {
             if (it.success()) {
-
+                Toast.makeText(this, "Sucesso", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(this, it.failure(), Toast.LENGTH_LONG).show()
             }
         })
     }

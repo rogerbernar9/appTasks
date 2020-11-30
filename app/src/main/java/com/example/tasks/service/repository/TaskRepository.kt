@@ -20,6 +20,10 @@ class TaskRepository(val context: Context) {
         val call: Call<Boolean> =
             mRemote.create(task.priorityId, task.description, task.duoDate, task.complete)
         call.enqueue(object: Callback<Boolean> {
+            override fun onFailure(call: Call<Boolean>, t: Throwable) {
+                listener.onFailure(context.getString(R.string.ERROR_UNEXPECTED))
+            }
+
             override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
                 if (response.code() != TaskConstants.HTTP.SUCCESS) {
                     val validation = Gson().fromJson(response.errorBody()!!.string(), String::class.java)
@@ -27,10 +31,6 @@ class TaskRepository(val context: Context) {
                 } else {
                     response.body()?.let { listener.onSuccess(it) }
                 }
-            }
-
-            override fun onFailure(call: Call<Boolean>, t: Throwable) {
-                listener.onFailure(context.getString(R.string.ERROR_UNEXPECTED))
             }
 
         })

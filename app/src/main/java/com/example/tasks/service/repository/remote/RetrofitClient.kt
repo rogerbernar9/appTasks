@@ -18,18 +18,18 @@ class RetrofitClient private constructor() {
 
         private fun getRetrofitInstance() : Retrofit {
             val httpClient = OkHttpClient.Builder()
-//            httpClient.addInterceptor(object: Interceptor {
-//                override fun intercept(chain: Interceptor.Chain): Response {
-//                    val request =
-//                        chain.request()
-//                            .newBuilder()
-//                            .addHeader(TaskConstants.HEADER.PERSON_KEY, personKey)
-//                            .addHeader(TaskConstants.HEADER.TOKEN_KEY, tokenKey)
-//                            .build()
-//                    return chain.proceed(request)
-//                }
-//
-//            })
+            httpClient.addInterceptor(object: Interceptor {
+                override fun intercept(chain: Interceptor.Chain): Response {
+                    val request =
+                        chain.request()
+                            .newBuilder()
+                            .addHeader(TaskConstants.HEADER.PERSON_KEY, personKey)
+                            .addHeader(TaskConstants.HEADER.TOKEN_KEY, tokenKey)
+                            .build()
+                    return chain.proceed(request)
+                }
+
+            })
 
 
 //            if(Companion::retrofit.isLateinit) {
@@ -44,7 +44,7 @@ class RetrofitClient private constructor() {
 
         fun addHeader(token: String, personKey: String) {
             this.personKey = personKey
-            this.tokenKey = tokenKey
+            this.tokenKey = token
         }
 
         fun <S> createService(serviceClass: Class<S>): S {
