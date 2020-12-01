@@ -1,6 +1,5 @@
 package com.example.tasks.service.repository.remote
 
-import com.example.tasks.service.model.PriorityModel
 import com.example.tasks.service.model.TaskModel
 import retrofit2.Call
 import retrofit2.http.*
