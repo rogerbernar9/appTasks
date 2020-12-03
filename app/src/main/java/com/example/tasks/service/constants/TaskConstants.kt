@@ -24,7 +24,7 @@ class TaskConstants private constructor() {
 
     object BUNDLE {
         const val TASKID = "taskid"
-        const val TASKFILTER = "taskfilter"
+        const val TASKFILTER = "taskFilter"
     }
 
     object FILTER {
