@@ -13,7 +13,7 @@ class TaskModel {
     @SerializedName("Description")
     var description: String = ""
 
-    @SerializedName("DuoDate")
+    @SerializedName("DueDate")
     var duoDate: String = ""
 
     @SerializedName("Complete")
