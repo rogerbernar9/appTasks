@@ -34,4 +34,6 @@ class PriorityRepository(context: Context) {
 
     fun list() = mDatabase.list()
 
+    fun getDescription(id: Int) = mDatabase.getDescription(id)
+
 }
