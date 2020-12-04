@@ -17,9 +17,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val mUserName = MutableLiveData<String>()
     var username: LiveData<String> = mUserName
 
+    private val mLogout = MutableLiveData<Boolean>()
+    var logout: LiveData<Boolean> = mLogout
+
     fun loadUserName() {
         mUserName.value = mSharedPreferences
             .get(TaskConstants.SHARED.PERSON_NAME)
+    }
+
+    fun logout() {
+        mSharedPreferences.remove(TaskConstants.SHARED.TOKEN_KEY)
+        mSharedPreferences.remove(TaskConstants.SHARED.PERSON_NAME)
+        mSharedPreferences.remove(TaskConstants.SHARED.PERSON_KEY)
+
+        mLogout.value = true
     }
 
 }
