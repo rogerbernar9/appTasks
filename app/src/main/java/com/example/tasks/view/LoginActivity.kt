@@ -30,11 +30,11 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         observe()
 
         // Verifica se usuário está logado
-        verifyLoggedUser()
 
-        showAuthentication()
+        mViewModel.isAuthenticationAvailable()
 
     }
+
 
     override fun onClick(v: View) {
         if (v.id == R.id.button_login) {
@@ -50,18 +50,11 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             this@LoginActivity,
             executor,
             object : BiometricPrompt.AuthenticationCallback() {
-                override fun onAuthenticationFailed() {
-                    super.onAuthenticationFailed()
-                }
-
-                override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
-                    super.onAuthenticationError(errorCode, errString)
-                }
-
                 override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                     super.onAuthenticationSucceeded(result)
+                    startActivity(Intent(applicationContext, MainActivity::class.java))
+                    finish()
                 }
-
             })
 
         val info: BiometricPrompt.PromptInfo = BiometricPrompt.PromptInfo.Builder()
@@ -84,12 +77,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         text_register.setOnClickListener(this)
     }
 
-    /**
-     * Verifica se usuário está logado
-     */
-    private fun verifyLoggedUser() {
-        mViewModel.verifyLoggedUser()
-    }
 
     /**
      * Observa ViewModel
@@ -100,18 +87,15 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
 
-//                RetrofitClient
-
             } else {
                 val message = it.failure()
                 Toast.makeText(this, message, Toast.LENGTH_LONG).show()
             }
         })
 
-        mViewModel.loggedUser.observe(this, Observer {
+        mViewModel.fingerprint.observe(this, Observer {
             if (it) {
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
+                showAuthentication()
             }
         })
     }
